@@ -8,8 +8,8 @@ from flask import Flask, jsonify, redirect, render_template, session, url_for, r
 from authlib.integrations.flask_client import OAuth
 from six.moves.urllib.parse import urlencode
 
-import imutils
-from imutils.video import VideoStream
+#import imutils
+#from imutils.video import VideoStream
 #import cv2
 
 #outputFrame = None
