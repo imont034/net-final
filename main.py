@@ -155,10 +155,7 @@ def play():
     
 @app.route('/live')
 @requires_auth
-def live():
-    t = threading.Thread(target=record, args=(32,))
-    t.daemon = True
-    t.start()    
+def live(): 
     return Response(generate_live_stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 @app.route('/menu')
@@ -170,7 +167,10 @@ def dashboard():
 def home():    
     return redirect("/login", code=302)    
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
+    t = threading.Thread(target=record, args=(32,))
+    t.daemon = True
+    t.start()   
     app.run(threaded=True, use_reloader=False)
     
 vs.stop()
