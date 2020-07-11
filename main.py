@@ -25,7 +25,7 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
 
-vs = VideoStream(src=0).start()
+vs = VideoStream(0).start()
 time.sleep(2.0)
 
 #####################################################################################################
