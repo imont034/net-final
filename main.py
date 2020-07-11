@@ -25,7 +25,7 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
 
-vs = VideoStream(src=0).start()
+vs = VideoStream(src=-1).start()
 time.sleep(2.0)
 
 #####################################################################################################
@@ -155,7 +155,10 @@ def play():
     
 @app.route('/live')
 @requires_auth
-def live(): 
+def live():    
+    t = threading.Thread(target=record, args=(32,))
+    t.daemon = True
+    t.start()   
     return Response(generate_live_stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 @app.route('/menu')
@@ -168,9 +171,6 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':
-    t = threading.Thread(target=record, args=(32,))
-    t.daemon = True
-    t.start()   
     app.run(threaded=True, use_reloader=False)
     
 vs.stop()
