@@ -74,18 +74,20 @@ def callback_handling():
 #####################################################################################################
 
 def stream():
-
+    print("abc")
     server = socket(AF_INET, SOCK_DGRAM)
     addr = gethostname()
     port = int(os.environ.get('PORT'))
     server.bind((addr, port))
+    print("def")
 
     while True:
-        
+        print("ghi")    
         encodedImage, addr = server.recvfrom(320000)        
-
+        print("jkl")
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 			bytearray(encodedImage) + b'\r\n')
+        print("mno")
     server.close()
 
 
@@ -119,7 +121,8 @@ def feed():
 @app.route('/live')
 @requires_auth
 def live():
-    return render_template('live.html')    
+    #return render_template('live.html')
+    return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 @app.route('/menu')
 @requires_auth
