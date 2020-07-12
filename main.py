@@ -111,7 +111,7 @@ def play():
     
 @app.route('/feed')
 @requires_auth
-def live():    
+def feed():    
     return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 @app.route('/live')
