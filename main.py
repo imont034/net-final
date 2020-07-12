@@ -76,7 +76,9 @@ def callback_handling():
 def stream():
 
     server = socket(AF_INET, SOCK_DGRAM)
-    server.bind((gethostname(), 12001))
+    addr = gethostname()
+    port = int(os.environ.get('PORT'))
+    server.bind((addr, port))
 
     while True:
         
@@ -129,4 +131,4 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':
-    app.run(threaded=False, use_reloader=False)
+    app.run()
