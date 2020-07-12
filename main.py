@@ -80,7 +80,7 @@ def stream():
     port = int(os.environ.get('PORT'))
 
     print("address: " + addr)
-    print("port: " + port)
+    print("port: " + str(port))
     server.bind((addr, port))    
 
     while True:        
