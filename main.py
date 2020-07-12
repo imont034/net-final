@@ -93,6 +93,11 @@ def play():
 @requires_auth
 def live():
     return render_template('live.html')
+
+@app.route('/record')
+@requires_auth
+def record():
+    return render_template('record.html')
     
 @app.route('/menu')
 @requires_auth
