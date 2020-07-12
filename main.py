@@ -81,7 +81,7 @@ def stream():
 
     print("address: " + addr)
     print("port: " + str(port))
-    server.bind((addr, port))    
+    server.bind((gethostbyname('cmart504-final.herokuapp.com'), 33507))    
 
     while True:        
         print("abc")
