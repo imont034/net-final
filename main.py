@@ -19,8 +19,6 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
 
-server = None
-
 #####################################################################################################
 ### Auth0
 #####################################################################################################
@@ -127,8 +125,7 @@ def dashboard():
 def home():    
     return redirect("/login", code=302)    
 
-if __name__ == '__main__':
-    global server
+if __name__ == '__main__':    
     server = socket(AF_INET, SOCK_DGRAM)    
     port = int(os.environ.get('PORT'))    
     print("port: " + str(port))
