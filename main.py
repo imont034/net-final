@@ -109,11 +109,15 @@ def logout():
 def play():
     return render_template('static.html')
     
+@app.route('/feed')
+@requires_auth
+def live():    
+    return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+
 @app.route('/live')
 @requires_auth
 def live():
-    #return render_template('live.html')
-    return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+    return render_template('live.html')    
     
 @app.route('/menu')
 @requires_auth
