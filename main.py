@@ -1,5 +1,6 @@
 import os, json, threading, datetime, time
 
+from socket import *
 from functools import wraps
 from werkzeug.exceptions import HTTPException
 from dotenv import load_dotenv, find_dotenv
@@ -69,6 +70,29 @@ def callback_handling():
     return redirect('/menu')
 
 #####################################################################################################
+### Live stream
+#####################################################################################################
+
+def stream():
+    
+    server = socket(AF_INET, SOCK_DGRAM)
+    
+    port = int(os.environ.get('PORT'))    
+    print("port: " + str(port))
+
+    server.bind(('0.0.0.0', port))    
+
+    while True:        
+        print("abc")
+        encodedImage = server.recv(27200)        
+        print("def")
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+			bytearray(encodedImage) + b'\r\n')        
+    server.close()
+
+
+
+#####################################################################################################
 ### Routing
 #####################################################################################################
 
@@ -87,17 +111,19 @@ def logout():
 @app.route('/static')
 @requires_auth
 def play():
+    print(gethostbyname(gethostname()))
     return render_template('static.html')
     
+@app.route('/feed')
+@requires_auth
+def feed():    
+    return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+
 @app.route('/live')
 @requires_auth
 def live():
-    return render_template('live.html')
-
-@app.route('/record')
-@requires_auth
-def record():
-    return render_template('record.html')
+    #return render_template('live.html')
+    return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 @app.route('/menu')
 @requires_auth
@@ -109,4 +135,4 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':
-    app.run(threaded=False, use_reloader=False)
+    app.run()
