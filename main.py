@@ -79,8 +79,8 @@ def stream():
     addr = gethostname()
     port = int(os.environ.get('PORT'))
 
-    print(addr)
-    print(port)
+    print("address: " + addr)
+    print("port: " + port)
     server.bind((addr, port))    
 
     while True:        
