@@ -81,7 +81,7 @@ def stream():
 
     print("address: " + addr)
     print("port: " + str(port))
-    server.bind((gethostbyname('cmart504-final.herokuapp.com'), 33507))    
+    server.bind(('', 33507))    
 
     while True:        
         print("abc")
@@ -112,6 +112,7 @@ def logout():
 @app.route('/static')
 @requires_auth
 def play():
+    print(gethostbyname(gethostname()))
     return render_template('static.html')
     
 @app.route('/feed')
