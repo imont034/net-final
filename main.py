@@ -74,20 +74,18 @@ def callback_handling():
 #####################################################################################################
 
 def stream():
-    print("abc")
+    
     server = socket(AF_INET, SOCK_DGRAM)
     addr = gethostname()
     port = int(os.environ.get('PORT'))
-    server.bind((addr, port))
-    print("def")
+    server.bind((addr, port))    
 
-    while True:
-        print("ghi")    
-        encodedImage, addr = server.recvfrom(320000)        
-        print("jkl")
+    while True:        
+        print("abc")
+        encodedImage = server.recv(27200)        
+        print("def")
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-			bytearray(encodedImage) + b'\r\n')
-        print("mno")
+			bytearray(encodedImage) + b'\r\n')        
     server.close()
 
 
