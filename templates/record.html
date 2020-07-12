@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Recording</title>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+        var constraints = { audio: true, video: { width: 1280, height: 720 } };
+
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(function (mediaStream)
+            {
+                var socket = io.connect('https://' + document.domain + ':' + location.port);   
+                socket.on('connect', function ()
+                {
+                    socket.emit('my event', { data: mediaStream });
+                });
+            }).catch(function (err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+    </script>
+</head>
+<body>
+    <div><p>Recording</p></div>
+</body>
+</html>
