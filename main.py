@@ -1,5 +1,6 @@
 import os, json, threading, datetime, time
 
+from socket import *
 from functools import wraps
 from werkzeug.exceptions import HTTPException
 from dotenv import load_dotenv, find_dotenv
@@ -69,6 +70,27 @@ def callback_handling():
     return redirect('/menu')
 
 #####################################################################################################
+### Live stream
+#####################################################################################################
+
+def stream():
+
+    ip = os.environ.get('MY_IP')
+    port = int(os.environ.get('MY_PORT'))
+
+    while True:
+        client = socket(AF_INET, SOCK_STREAM)
+        client.connect((ip, port))
+        client.send('start')
+        encodedImage = client.recv(160000)
+        client.close()
+
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+			bytearray(encodedImage) + b'\r\n')
+
+
+
+#####################################################################################################
 ### Routing
 #####################################################################################################
 
@@ -92,7 +114,8 @@ def play():
 @app.route('/live')
 @requires_auth
 def live():
-    return render_template('live.html')
+    #return render_template('live.html')
+    return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 @app.route('/menu')
 @requires_auth
