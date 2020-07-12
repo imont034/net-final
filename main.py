@@ -19,6 +19,11 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
 
+server = socket(AF_INET, SOCK_DGRAM)    
+port = int(os.environ.get('PORT'))    
+print("port: " + str(port))
+server.bind(('0.0.0.0', port))    
+
 #####################################################################################################
 ### Auth0
 #####################################################################################################
@@ -74,23 +79,12 @@ def callback_handling():
 #####################################################################################################
 
 def stream():
-    
-    server = socket(AF_INET, SOCK_DGRAM)
-    
-    port = int(os.environ.get('PORT'))    
-    print("port: " + str(port))
-
-    server.bind(('0.0.0.0', port))    
-
     while True:        
         print("abc")
         encodedImage = server.recv(27200)        
         print("def")
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-			bytearray(encodedImage) + b'\r\n')        
-    server.close()
-
-
+			bytearray(encodedImage) + b'\r\n')
 
 #####################################################################################################
 ### Routing
