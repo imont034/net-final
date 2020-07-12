@@ -19,10 +19,7 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
 
-server = socket(AF_INET, SOCK_DGRAM)    
-port = int(os.environ.get('PORT'))    
-print("port: " + str(port))
-server.bind(('0.0.0.0', port))    
+server = None
 
 #####################################################################################################
 ### Auth0
@@ -43,7 +40,7 @@ auth0 = oauth.register(
     access_token_url=AUTH0_BASE_URL + '/oauth/token',
     authorize_url=AUTH0_BASE_URL + '/authorize',
     client_kwargs={
-        'scope': 'openid profile',
+        'scope': 'openid profile email',
     },
 )
 
@@ -79,6 +76,8 @@ def callback_handling():
 #####################################################################################################
 
 def stream():
+    global server
+
     while True:        
         print("abc")
         encodedImage = server.recv(27200)        
@@ -129,4 +128,9 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':
+    global server
+    server = socket(AF_INET, SOCK_DGRAM)    
+    port = int(os.environ.get('PORT'))    
+    print("port: " + str(port))
+    server.bind(('0.0.0.0', port))    
     app.run()
