@@ -18,7 +18,7 @@
             background-color: #666;
         }
     </style>
-    <!--<script>
+    <script>
         var constraints = { audio: true, video: { width: 1280, height: 720 } };
         var video = document.querySelector("#videoElement");
 
@@ -32,13 +32,11 @@
                     video.play();
                 };
             }).catch(function (err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
-    </script>-->
+    </script>
 </head>
 <body>
     <div id="container">
-        <video autoplay="True" id="videoElement">
-            <source src="/feed" type="video/mp4">
-        </video>
+        <video autoplay="True" id="videoElement"></video>
     </div>
 </body>
 </html>
