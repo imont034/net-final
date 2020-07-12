@@ -78,6 +78,9 @@ def stream():
     server = socket(AF_INET, SOCK_DGRAM)
     addr = gethostname()
     port = int(os.environ.get('PORT'))
+
+    print(addr)
+    print(port)
     server.bind((addr, port))    
 
     while True:        
