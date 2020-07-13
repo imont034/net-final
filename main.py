@@ -78,10 +78,9 @@ def stream():
     #addr = '0.0.0.0'
     addr = gethostbyname(gethostname())
     port = int(os.environ.get('PORT'))
-    server = socket(AF_INET, SOCK_STREAM) 
-    server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+    server = socket(AF_INET, SOCK_STREAM)    
 
-    server.bind((addr, port))
+    server.bind((addr, 2002))
     server.listen(5)
     conn, addr = server.accept()
     
