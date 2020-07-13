@@ -8,7 +8,7 @@
     <script type="text/javascript" src="/static/jquery.min.js"></script>
     <script>
         var constraints = { audio: true, video: { width: 1280, height: 720 } };
-        var socket = io.connect('https://' + document.domain + ':' + location.port);
+        var socket = io.connect('https://' + document.domain + ':' + location.port, { resource: '/static' });
         //var socket = io.connect();
 
         socket.on('connect', function ()
