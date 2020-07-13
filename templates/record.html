@@ -10,15 +10,14 @@
         var constraints = { audio: true, video: { width: 1280, height: 720 } };
         var socket = io.connect('https://' + document.domain + ':' + location.port);
         //var socket = io.connect();
-
-        socket.on('connect', function ()
-        {
+        console.log('def');
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(function (mediaStream)
                 {
+                    console.log('ghi');
                     socket.emit('my event', { data: mediaStream });
                 }).catch(function (err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
-        });
+        
     </script>
 </head>
 <body>

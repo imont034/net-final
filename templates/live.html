@@ -26,6 +26,9 @@
 
         socket.on('my event', function (data)
         {
+            console.log('abc');
+            console.log(data);
+
             var video = document.querySelector("#videoElement");
             video.srcObject = data;
             video.onloadedmetadata = function (e)
