@@ -81,7 +81,6 @@ def stream():
     server = socket(AF_INET, SOCK_STREAM) 
     server.bind((addr, port))
     server.listen(5)
-
     conn, addr = server.accept()
     
     while True:
