@@ -76,14 +76,18 @@ def callback_handling():
 def stream():   
 
     while True:
-        server = socket(AF_INET, SOCK_DGRAM)    
+        server = socket(AF_INET, SOCK_DGRAM)  
+        
+        #addr = '0.0.0.0'
+        addr = gethostbyname(gethostname())
         port = int(os.environ.get('PORT'))
 
         print(gethostbyname(gethostname()))
         print("port: " + str(port))
 
-        server.bind(('0.0.0.0', port))            
-        print("abc")        
+        server.bind((addr, port))            
+        print("abc")
+        #print(server.getsockname())        
 
         encodedImage = server.recv(28000)        
         print("def")
@@ -134,9 +138,6 @@ def home():
     r = redis.Redis(host=url.hostname, port=url.port, password=url.password)
     r.set('addr', gethostbyname(gethostname()))
     r.set('port', os.environ.get('PORT'))
-    print('qwer')
-    print(r.get('addr').decode())
-    print(r.get('port').decode())
 
     return redirect("/login", code=302)    
 
