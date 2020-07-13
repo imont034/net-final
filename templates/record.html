@@ -8,8 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script>
         var constraints = { audio: true, video: { width: 1280, height: 720 } };
-        var socket = io.connect('https://' + document.domain + ':' + location.port);
-        socket.emit('asd', { data: 'qwer' });
+        var socket = io.connect('https://' + document.domain + ':' + location.port);        
 
         function record(constraints, socket)
         {

@@ -122,7 +122,7 @@ def dashboard():
 
 @app.route('/')
 def home():
-    return redirect("/login", code=302)    
+    return redirect("/login")    
 
 if __name__ == '__main__':    
     socketio.run(app, port=int(os.environ.get('PORT')))
