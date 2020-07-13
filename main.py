@@ -77,16 +77,18 @@ def stream():
 
     while True:
         server = socket(AF_INET, SOCK_DGRAM)    
-        port = int(os.environ.get('PORT'))    
-        print("port: " + str(port))
-        server.bind(('0.0.0.0', port))            
-        print("abc")
-        print(port)
+        port = int(os.environ.get('PORT'))
 
-        encodedImage = server.recv(28000)        
-        print("def")
-        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-			bytearray(encodedImage) + b'\r\n')
+        print(gethostbyname(gethostname()))
+        print("port: " + str(port))
+
+   #     server.bind(('0.0.0.0', port))            
+   #     print("abc")        
+
+   #     encodedImage = server.recv(28000)        
+   #     print("def")
+   #     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+			#bytearray(encodedImage) + b'\r\n')
 
 #####################################################################################################
 ### Routing
