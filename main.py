@@ -1,5 +1,6 @@
 import os, json, threading, datetime, time, urllib, redis
 
+from flask_socketio import SocketIO
 from socket import *
 from functools import wraps
 from werkzeug.exceptions import HTTPException
@@ -18,6 +19,7 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
+socketio = SocketIO(app)
 
 #####################################################################################################
 ### Auth0
@@ -70,37 +72,6 @@ def callback_handling():
     return redirect('/menu')
 
 #####################################################################################################
-### Live stream
-#####################################################################################################
-
-def stream():
-
-    #addr = '0.0.0.0'
-    addr = gethostbyname(gethostname())
-    port = int(os.environ.get('PORT'))
-    server = socket(AF_INET, SOCK_STREAM)    
-
-    print('ghi')
-    server.bind((addr, 2002))
-    print('jkl')
-    server.listen(5)
-    conn, addr = server.accept()
-    print('mno')
-
-    while True:
-        #server = socket(AF_INET, SOCK_DGRAM)  
-        #server.bind((addr, port))
-
-        print("abc")
-        #print(server.getsockname())        
-        encodedImage = conn.recv(28000)        
-        #encodedImage = server.recv(28000)        
-        print("def")
-        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-			bytearray(encodedImage) + b'\r\n')
-        #server.close()
-    conn.close()
-#####################################################################################################
 ### Routing
 #####################################################################################################
 
@@ -122,16 +93,17 @@ def play():
     print(gethostbyname(gethostname()))
     return render_template('static.html')
     
-@app.route('/feed')
+@app.route('/record')
 @requires_auth
-def feed():    
-    return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+def record():    
+    return render_template('record.html')
+    #return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 @app.route('/live')
 @requires_auth
 def live():
-    #return render_template('live.html')
-    return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+    return render_template('live.html')
+    #return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 @app.route('/menu')
 @requires_auth
@@ -148,4 +120,4 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':    
-    app.run()
+    socketio.run(app, port=int(os.environ.get('PORT')))
