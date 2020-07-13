@@ -73,27 +73,30 @@ def callback_handling():
 ### Live stream
 #####################################################################################################
 
-def stream():   
+def stream():
 
+    #addr = '0.0.0.0'
+    addr = gethostbyname(gethostname())
+    port = int(os.environ.get('PORT'))
+    server = socket(AF_INET, SOCK_STREAM) 
+    server.bind((addr, port))
+    server.listen(5)
+
+    conn, addr = server.accept()
+    
     while True:
-        server = socket(AF_INET, SOCK_DGRAM)  
-        
-        #addr = '0.0.0.0'
-        addr = gethostbyname(gethostname())
-        port = int(os.environ.get('PORT'))
+        #server = socket(AF_INET, SOCK_DGRAM)  
+        #server.bind((addr, port))
 
-        print(gethostbyname(gethostname()))
-        print("port: " + str(port))
-
-        server.bind((addr, port))            
         print("abc")
         #print(server.getsockname())        
-
-        encodedImage = server.recv(28000)        
+        encodedImage = conn.recv(28000)        
+        #encodedImage = server.recv(28000)        
         print("def")
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 			bytearray(encodedImage) + b'\r\n')
-        server.close()
+        #server.close()
+    conn.close()
 #####################################################################################################
 ### Routing
 #####################################################################################################
