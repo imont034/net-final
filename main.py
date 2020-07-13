@@ -1,4 +1,4 @@
-import os, json, threading, datetime, time
+import os, json, threading, datetime, time, urllib, redis
 
 from socket import *
 from functools import wraps
@@ -82,13 +82,13 @@ def stream():
         print(gethostbyname(gethostname()))
         print("port: " + str(port))
 
-   #     server.bind(('0.0.0.0', port))            
-   #     print("abc")        
+        server.bind(('0.0.0.0', port))            
+        print("abc")        
 
-   #     encodedImage = server.recv(28000)        
-   #     print("def")
-   #     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-			#bytearray(encodedImage) + b'\r\n')
+        encodedImage = server.recv(28000)        
+        print("def")
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+			bytearray(encodedImage) + b'\r\n')
         server.close()
 #####################################################################################################
 ### Routing
@@ -129,7 +129,12 @@ def dashboard():
     return render_template('menu.html')
 
 @app.route('/')
-def home():    
+def home():
+    url = urllib.parse.urlparse(os.environ.get('REDISCLOUD_URL'))
+    r = redis.Redis(host=url.hostname, port=url.port, password=url.password)
+    r.set('addr', gethostbyname(gethostname()))
+    r.set('port', os.environ.get('PORT'))
+
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':    
