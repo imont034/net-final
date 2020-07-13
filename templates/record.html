@@ -8,16 +8,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script>
         var constraints = { audio: true, video: { width: 1280, height: 720 } };
-        var socket = io.connect('https://' + document.domain + ':' + location.port);
-        //var socket = io.connect();
-        console.log('def');
+        var socket = io.connect('https://' + document.domain + ':' + location.port);        
+        
+        while (true)
+        {
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(function (mediaStream)
                 {
-                    console.log('ghi');
+                    console.log('def')
+                    console.log(mediaStream)
                     socket.emit('my event', { data: mediaStream });
                 }).catch(function (err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
-        
+        }
     </script>
 </head>
 <body>
