@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <title>Recording</title>
-    <script type="text/javascript" src="/static/socket.io.min.js"></script>
-    <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script>
         var constraints = { audio: true, video: { width: 1280, height: 720 } };
         var socket = io.connect('https://' + document.domain + ':' + location.port);
