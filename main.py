@@ -73,12 +73,17 @@ def callback_handling():
 ### Live stream
 #####################################################################################################
 
-def stream():
-    global server
+def stream():   
 
-    while True:        
+    while True:
+        server = socket(AF_INET, SOCK_DGRAM)    
+        port = int(os.environ.get('PORT'))    
+        print("port: " + str(port))
+        server.bind(('0.0.0.0', port))            
         print("abc")
-        encodedImage = server.recv(27200)        
+        print(port)
+
+        encodedImage = server.recv(28000)        
         print("def")
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 			bytearray(encodedImage) + b'\r\n')
@@ -126,8 +131,4 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':    
-    server = socket(AF_INET, SOCK_DGRAM)    
-    port = int(os.environ.get('PORT'))    
-    print("port: " + str(port))
-    server.bind(('0.0.0.0', port))    
     app.run()
