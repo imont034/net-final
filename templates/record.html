@@ -9,8 +9,8 @@
     <script>
         var constraints = { audio: true, video: { width: 1280, height: 720 } };
         var socket = io.connect('https://' + document.domain + ':' + location.port);        
-        
-        while (true)
+
+        function record(constraints, socket)
         {
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(function (mediaStream)
@@ -20,6 +20,8 @@
                     socket.emit('my event', { data: mediaStream });
                 }).catch(function (err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
         }
+
+        var intervalID = window.setInterval(record, 500, constraints, socket);
     </script>
 </head>
 <body>
