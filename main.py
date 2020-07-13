@@ -79,7 +79,7 @@ def stream():
     addr = gethostbyname(gethostname())
     port = int(os.environ.get('PORT'))
     server = socket(AF_INET, SOCK_STREAM) 
-    server.setsockopt(option=SO_REUSEADDR)
+    comSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
     server.bind((addr, port))
     server.listen(5)
