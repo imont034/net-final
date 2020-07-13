@@ -134,6 +134,9 @@ def home():
     r = redis.Redis(host=url.hostname, port=url.port, password=url.password)
     r.set('addr', gethostbyname(gethostname()))
     r.set('port', os.environ.get('PORT'))
+    print('qwer')
+    print(r.get('addr').decode())
+    print(r.get('port').decode())
 
     return redirect("/login", code=302)    
 
