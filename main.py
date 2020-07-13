@@ -80,10 +80,13 @@ def stream():
     port = int(os.environ.get('PORT'))
     server = socket(AF_INET, SOCK_STREAM)    
 
+    print('ghi')
     server.bind((addr, 2002))
+    print('jkl')
     server.listen(5)
     conn, addr = server.accept()
-    
+    print('mno')
+
     while True:
         #server = socket(AF_INET, SOCK_DGRAM)  
         #server.bind((addr, port))
