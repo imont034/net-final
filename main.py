@@ -1,6 +1,6 @@
 import os, json, threading, datetime, time, urllib, redis
 
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from socket import *
 from functools import wraps
 from werkzeug.exceptions import HTTPException
@@ -77,7 +77,7 @@ def callback_handling():
 #####################################################################################################
 
 @socketio.on('record')
-def redirect(data):
+def redirect(data):    
     emit('source', data, broadcast=True)
 
 
