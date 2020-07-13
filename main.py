@@ -112,11 +112,6 @@ def dashboard():
 
 @app.route('/')
 def home():
-    url = urllib.parse.urlparse(os.environ.get('REDISCLOUD_URL'))
-    r = redis.Redis(host=url.hostname, port=url.port, password=url.password)
-    r.set('addr', gethostbyname(gethostname()))
-    r.set('port', os.environ.get('PORT'))
-
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':    
