@@ -1,7 +1,6 @@
 import os, json, threading, datetime, time, urllib, redis
 
 from flask_socketio import *
-from socket import *
 from functools import wraps
 from werkzeug.exceptions import HTTPException
 from dotenv import load_dotenv, find_dotenv
