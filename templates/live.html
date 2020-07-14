@@ -22,11 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script type="text/javascript">
         var socket = io.connect('https://' + document.domain + ':' + location.port);
-        var video = document.querySelector("#videoElement");
-        video.onloadedmetadata = function (e)
-        {
-            video.play();
-        };        
+        var video = document.querySelector("#videoElement");       
 
         socket.on('get src', function (data)
         {
@@ -43,6 +39,11 @@
             console.log(mediaStream);
             
             video.srcObject = mediaStream;            
+
+            video.onloadedmetadata = function (e)
+            {
+                video.play();
+            }; 
         });
     </script>
 </head>
