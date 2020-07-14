@@ -20,6 +20,7 @@ flask-auth0==0.1.0
 Flask-SocketIO==4.3.1
 future==0.18.2
 gevent==20.6.2
+gevent-socketio==0.3.6
 gevent-websocket==0.10.1
 greenlet==0.4.16
 gunicorn==20.0.4
