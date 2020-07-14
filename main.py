@@ -77,8 +77,7 @@ def callback_handling():
 
 @socketio.on('send src', namespace='/record')
 def redirect(data):    
-    emit('get src', data, json=True, broadcast=True, namespace='/live')
-    return 'ok'
+    emit('get src', data, json=True, broadcast=True, namespace='/live')    
 
 
 #####################################################################################################
@@ -125,4 +124,4 @@ def home():
     return redirect("/login")    
 
 if __name__ == '__main__':    
-    socketio.run(app, port=int(os.environ.get('PORT')))
+    app.run(port=int(os.environ.get('PORT')))
