@@ -14,12 +14,18 @@
         {
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(function (mediaStream)
-                {                    
-                    socket.emit('send src', { data: mediaStream });
+                {
+                    js = {}
+                    for (key in mediaStream) 
+                    {
+                        js[key] = mediaStream[key]
+                    }
+
+                    socket.emit('send src', { data: JSON.stringify(js) });
                 }).catch(function (err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
         }
 
-        var intervalID = window.setInterval(record, 500, constraints, socket);
+        var intervalID = window.setInterval(record, 1000, constraints, socket);
     </script>
 </head>
 <body>

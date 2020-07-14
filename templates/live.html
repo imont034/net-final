@@ -22,20 +22,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script type="text/javascript">
         var socket = io.connect('https://' + document.domain + ':' + location.port);
-        //var socket = io.connect();        
+        var video = document.querySelector("#videoElement");
+        video.onloadedmetadata = function (e)
+        {
+            video.play();
+        };        
 
         socket.on('get src', function (data)
         {
-            console.log('abc');
-            console.log(typeof data);
-            console.log(data);
+            mediaStream = MediaStream()
+            js = JSOn.parse(data)
 
-            var video = document.querySelector("#videoElement");
-            video.srcObject = data;
-            video.onloadedmetadata = function (e)
+            for (key in js)
             {
-                video.play();
-            };
+                mediaStream[key] = js[key]
+            }
+
+            console.log('abc');
+            console.log(typeof mediaStream);
+            console.log(mediaStream);
+            
+            video.srcObject = mediaStream;            
         });
     </script>
 </head>

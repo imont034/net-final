@@ -75,8 +75,8 @@ def callback_handling():
 ### Sockets
 #####################################################################################################
 
-def handle(data):
-    emit('get src', data, json=True, broadcast=True, namespace='/live')
+def handle(message):
+    emit('get src', message, broadcast=True, namespace='/live')
 
 #@socketio.on('send src', namespace='/record')
 #def redirect(data):
