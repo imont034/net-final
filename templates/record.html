@@ -15,7 +15,7 @@
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(function (mediaStream)
                 {                    
-                    socket.emit('record', { data: mediaStream });
+                    socket.emit('send src', { data: mediaStream });
                 }).catch(function (err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
         }
 
