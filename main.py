@@ -102,8 +102,7 @@ def logout():
 
 @app.route('/static')
 @requires_auth
-def play():
-    print(gethostbyname(gethostname()))
+def play():    
     return render_template('static.html')
     
 @app.route('/record')
