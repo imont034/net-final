@@ -1,4 +1,4 @@
-import os, json, threading, time, urllib
+import os, json, threading, time, urllib, threading
 from socket import *
 
 import imutils
@@ -17,13 +17,8 @@ server.listen(10)
 
 print('Listening...')
 
-# loop over frames from the output stream
-while True:		
-
-	try:
-		conn, addr = server.accept()
-		message = conn.recv(2048).decode('utf-8')		
-
+def send_bytes(conn, addr):
+	while True:
 		frame = vs.read()
 		frame = imutils.resize(frame, width=400, height=400)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -43,9 +38,16 @@ while True:
 			continue					
 		
 		conn.send(str(len(bytearray(encoded_image))).encode('utf-8'))
-		conn.send(encoded_image)
+		conn.sendall(encoded_image)
 		#conn.close()		
 
+# loop over frames from the output stream
+while True:
+	try:
+		conn, addr = server.accept()
+		t = threading.Thread(target=send_bytes, args=(conn, addr,))
+		t.daemon = True
+		t.start()
 	except KeyboardInterrupt:
 		print('\nInterruptued by ctrl c')
 		break

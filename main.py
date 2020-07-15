@@ -99,12 +99,11 @@ def get_bytes():
 
     addr = os.environ.get('MY_IP')
     port = int(os.environ.get('MY_PORT'))
+
     client = socket(AF_INET, SOCK_STREAM)
     client.connect((addr, port))
     
-    while True:
-        message = 'start'
-        client.send(message.encode('utf-8'))
+    while True:        
         length = int(client.recv(2048).decode('utf-8'))
         #with lock:
         bytes = client.recv(length)
