@@ -104,9 +104,9 @@ def get_bytes():
     client.connect((addr, port))
     
     while True:        
-        length = int(client.recv(2048).decode('utf-8'))
+        #length = int(client.recv(2048).decode('utf-8'))
         #with lock:
-        bytes = client.recv(length)
+        bytes = client.recv(30000)
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 		    bytearray(bytes) + b'\r\n')
         #client.close()

@@ -27,17 +27,16 @@ def send_bytes(conn, addr):
 		output_frame = frame.copy()
 
 		if output_frame is None:
-			conn.close()
+			#conn.close()
 			continue
 		
 		# encode the frame in JPEG format
 		(flag, encoded_image) = cv2.imencode(".jpg", output_frame)		
 
 		if not flag:
-			conn.close()
-			continue					
+			#conn.close()
+			continue		
 		
-		conn.send(str(len(bytearray(encoded_image))).encode('utf-8'))
 		conn.sendall(encoded_image)
 		#conn.close()		
 
