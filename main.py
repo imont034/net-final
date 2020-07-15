@@ -102,21 +102,17 @@ def get_bytes():
         message = 'start'
         client.send(message.encode('utf-8'))
 
-        bytes = client.recv(28000)
+        bytes = client.recv(2800000)
         client.close()
 
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 			bytearray(bytes) + b'\r\n')
 
-@app.route('/feed')
-@requires_auth
-def feed():
-    return Response(get_bytes(), mimetype = "multipart/x-mixed-replace; boundary=frame")
-    
+   
 @app.route('/live')
 @requires_auth
 def live():
-    return render_template('live.html')
+    return Response(get_bytes(), mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 @app.route('/menu')
 @requires_auth

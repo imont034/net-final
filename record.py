@@ -22,7 +22,7 @@ while True:
 
 	try:
 		conn, addr = server.accept()
-		message = conn.recv(2048)
+		message = conn.recv(2048).decode('utf-8')		
 
 		frame = vs.read()
 		frame = imutils.resize(frame, width=400, height=400)
@@ -40,10 +40,10 @@ while True:
 
 		if not flag:
 			conn.close()
-			continue			
+			continue					
 		
 		conn.send(encoded_image)
-		conn.close()
+		conn.close()		
 
 	except KeyboardInterrupt:
 		print('\nInterruptued by ctrl c')
