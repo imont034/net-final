@@ -99,18 +99,18 @@ def get_bytes():
 
     addr = os.environ.get('MY_IP')
     port = int(os.environ.get('MY_PORT'))
-
+    client = socket(AF_INET, SOCK_STREAM)
+    client.connect((addr, port))
+    
     while True:
-        client = socket(AF_INET, SOCK_STREAM)
-        client.connect((addr, port))
-
         message = 'start'
         client.send(message.encode('utf-8'))
         length = int(client.recv(2048).decode('utf-8'))
-
-        with lock:
-            bytes = client.recv(length)
-            client.close()        
+        #with lock:
+        bytes = client.recv(length)
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+		    bytearray(bytes) + b'\r\n')
+        #client.close()
 
 def get_feed():
     global bytes, lock
@@ -125,10 +125,10 @@ def get_feed():
 @app.route('/feed')
 @requires_auth
 def feed():
-    t = threading.Thread(target=get_bytes)
-    t.daemon = True
-    t.start()
-    return Response(get_feed(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+    #t = threading.Thread(target=get_bytes)
+    #t.daemon = True
+    #t.start()
+    return Response(get_bytes(), mimetype = "multipart/x-mixed-replace; boundary=frame")
    
 @app.route('/live')
 @requires_auth

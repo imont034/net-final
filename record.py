@@ -43,8 +43,8 @@ while True:
 			continue					
 		
 		conn.send(str(len(bytearray(encoded_image))).encode('utf-8'))
-		conn.sendall(encoded_image)
-		conn.close()		
+		conn.send(encoded_image)
+		#conn.close()		
 
 	except KeyboardInterrupt:
 		print('\nInterruptued by ctrl c')
