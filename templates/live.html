@@ -12,7 +12,7 @@
             border: 10px #333 solid;
         }
 
-        #videoElement {
+        #image {
             width: 500px;
             height: 375px;
             background-color: #666;
@@ -21,9 +21,7 @@
 </head>
 <body>
     <div id="container">
-        <video autoplay="True" id="videoElement">
-            <source src="{{url_for('feed') }}" type="video/mp4"/>
-        </video>
+        <img id="image" src="{{url_for('feed') }}" />
     </div>
 </body>
 </html>

@@ -108,11 +108,15 @@ def get_bytes():
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 			bytearray(bytes) + b'\r\n')
 
+@app.route('/feed')
+@requires_auth
+def feed():
+    return Response(get_bytes(), mimetype = "multipart/x-mixed-replace; boundary=frame")
    
 @app.route('/live')
 @requires_auth
 def live():
-    return Response(get_bytes(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+    return render_template('live.html')
     
 @app.route('/menu')
 @requires_auth
