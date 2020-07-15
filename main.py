@@ -106,9 +106,10 @@ def get_bytes():
 
         message = 'start'
         client.send(message.encode('utf-8'))
+        length = int(client.recv(2048).decode('utf-8'))
 
         with lock:
-            bytes = client.recv(2800000)
+            bytes = client.recv(length)
             client.close()        
 
 def get_feed():
@@ -118,8 +119,8 @@ def get_feed():
         with lock:
             if bytes is None:
                 continue
-        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-		bytearray(bytes) + b'\r\n')
+            yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+		    bytearray(bytes) + b'\r\n')
 
 @app.route('/feed')
 @requires_auth

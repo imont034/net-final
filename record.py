@@ -42,7 +42,8 @@ while True:
 			conn.close()
 			continue					
 		
-		conn.send(encoded_image)
+		conn.send(str(len(bytearray(encoded_image))).encode('utf-8'))
+		conn.sendall(encoded_image)
 		conn.close()		
 
 	except KeyboardInterrupt:
