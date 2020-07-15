@@ -17,9 +17,13 @@ server.listen(10)
 
 print('Listening...')
 
-def send_bytes(conn, addr):	
-	
-	while True:		
+def send_bytes(conn, addr):
+
+# loop over frames from the output stream
+while True:
+	try:
+		conn, addr = server.accept()		
+
 		frame = vs.read()
 		frame = imutils.resize(frame, width=400, height=400)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -27,24 +31,20 @@ def send_bytes(conn, addr):
 		
 		output_frame = frame.copy()
 
-		if output_frame is None:				
+		if output_frame is None:
+			conn.close()
 			continue
 		
 		# encode the frame in JPEG format
 		(flag, encoded_image) = cv2.imencode(".jpg", output_frame)		
 
-		if not flag:				
-			continue		
-		
+		if not flag:
+			conn.close()
+			continue					
+				
 		conn.send(encoded_image)
+		conn.close()		
 
-# loop over frames from the output stream
-while True:
-	try:
-		conn, addr = server.accept()
-		t = threading.Thread(target=send_bytes, args=(conn, addr,))
-		t.daemon = True
-		t.start()
 	except KeyboardInterrupt:
 		print('\nInterruptued by ctrl c')
 		break

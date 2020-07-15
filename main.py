@@ -95,21 +95,20 @@ def play():
     return render_template('static.html')
 
 def get_bytes():
-    global bytes, lock
+    #global bytes, lock
 
     addr = os.environ.get('MY_IP')
-    port = int(os.environ.get('MY_PORT'))
-
-    client = socket(AF_INET, SOCK_STREAM)
-    client.connect((addr, port))
+    port = int(os.environ.get('MY_PORT'))    
     
-    while True:        
+    while True:
+        client = socket(AF_INET, SOCK_STREAM)
+        client.connect((addr, port))
         #length = int(client.recv(2048).decode('utf-8'))
         #with lock:
         bytes = client.recv(30000)
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 		    bytearray(bytes) + b'\r\n')
-        #client.close()
+        client.close()
 
 def get_feed():
     global bytes, lock
