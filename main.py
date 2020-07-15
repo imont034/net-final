@@ -102,15 +102,14 @@ def get_bytes():
 
     client = socket(AF_INET, SOCK_STREAM)
     client.connect((addr, port))
-
-    with client:    
-        while True:        
-            #length = int(client.recv(2048).decode('utf-8'))
-            #with lock:
-            bytes = client.recv(30000)
-            yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-		        bytearray(bytes) + b'\r\n')
-            #client.close()
+    
+    while True:        
+        #length = int(client.recv(2048).decode('utf-8'))
+        #with lock:
+        bytes = client.recv(30000)
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+		    bytearray(bytes) + b'\r\n')
+        #client.close()
 
 def get_feed():
     global bytes, lock
