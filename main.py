@@ -1,6 +1,7 @@
-import os, json, threading, datetime, time, urllib, redis
+import os, json, threading, datetime, time
 
-from flask_socketio import *
+from socket import *
+
 from functools import wraps
 from werkzeug.exceptions import HTTPException
 from dotenv import load_dotenv, find_dotenv
@@ -18,7 +19,6 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
-socketio = SocketIO(app)
 
 #####################################################################################################
 ### Auth0
@@ -39,7 +39,7 @@ auth0 = oauth.register(
     access_token_url=AUTH0_BASE_URL + '/oauth/token',
     authorize_url=AUTH0_BASE_URL + '/authorize',
     client_kwargs={
-        'scope': 'openid profile email',
+        'scope': 'openid profile',
     },
 )
 
@@ -70,20 +70,6 @@ def callback_handling():
     }
     return redirect('/menu')
 
-
-#####################################################################################################
-### Sockets
-#####################################################################################################
-
-def handle(message):
-    emit('get src', message, broadcast=True, namespace='/live')
-
-#@socketio.on('send src', namespace='/record')
-#def redirect(data):
-socketio.on_event('send src', handle, namespace='/record')
-    
-
-
 #####################################################################################################
 ### Routing
 #####################################################################################################
@@ -102,20 +88,35 @@ def logout():
 
 @app.route('/static')
 @requires_auth
-def play():    
+def play():
     return render_template('static.html')
-    
-@app.route('/record')
-@requires_auth
-def record():    
-    return render_template('record.html')
-    #return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
 
+def get_bytes():
+    addr = os.environ.get('MY_IP')
+    port = int(os.environ.get('MY_PORT'))
+
+    while True:
+        client = socket(AF_INET, SOCK_STREAM)
+        client.connect((addr, port))
+
+        message = 'start'
+        client.send(message.encode('utf-8'))
+
+        bytes = client.recv(28000)
+        client.close()
+
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+			bytearray(bytes) + b'\r\n')
+
+@app.route('/feed')
+@requires_auth
+def feed():
+    return Response(get_bytes(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+    
 @app.route('/live')
 @requires_auth
 def live():
     return render_template('live.html')
-    #return Response(stream(), mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 @app.route('/menu')
 @requires_auth
@@ -123,8 +124,8 @@ def dashboard():
     return render_template('menu.html')
 
 @app.route('/')
-def home():
-    return redirect("/login")    
+def home():    
+    return redirect("/login", code=302)    
 
-if __name__ == '__main__':    
-    socketio.run(app, port=int(os.environ.get('PORT')))
+if __name__ == '__main__':
+    app.run(threaded=False, use_reloader=False)

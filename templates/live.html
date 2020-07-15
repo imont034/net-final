@@ -7,49 +7,22 @@
     <style>
         #container {
             margin: 0px auto;
-            width: 1280px;
-            height: 720px;
+            width: 500px;
+            height: 375px;
             border: 10px #333 solid;
         }
 
         #videoElement {
-            width: 1280px;
-            height: 720px;
+            width: 500px;
+            height: 375px;
             background-color: #666;
         }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-    <script type="text/javascript">
-        var socket = io.connect('https://' + document.domain + ':' + location.port);
-        var video = document.querySelector("#videoElement");       
-
-        socket.on('get src', function (data)
-        {
-            mediaStream = MediaStream()
-            js = JSOn.parse(data)
-
-            for (key in js)
-            {
-                mediaStream[key] = js[key]
-            }
-
-            console.log('abc');
-            console.log(typeof mediaStream);
-            console.log(mediaStream);
-            
-            video.srcObject = mediaStream;            
-
-            video.onloadedmetadata = function (e)
-            {
-                video.play();
-            }; 
-        });
-    </script>
+    </style>    
 </head>
 <body>
     <div id="container">
-        <video autoplay="True" id="videoElement">            
+        <video autoplay="True" id="videoElement">
+            <source src="{{url_for('feed') }}" type="video/mp4"/>
         </video>
     </div>
 </body>
