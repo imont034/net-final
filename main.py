@@ -1,4 +1,4 @@
-import os, json, threading, datetime, time
+import os, json, threading, datetime, time, threading
 
 from socket import *
 
@@ -19,6 +19,9 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
+
+bytes = None
+lock = threading.Lock()
 
 #####################################################################################################
 ### Auth0
@@ -92,6 +95,8 @@ def play():
     return render_template('static.html')
 
 def get_bytes():
+    global bytes, lock
+
     addr = os.environ.get('MY_IP')
     port = int(os.environ.get('MY_PORT'))
 
@@ -102,16 +107,27 @@ def get_bytes():
         message = 'start'
         client.send(message.encode('utf-8'))
 
-        bytes = client.recv(2800000)
-        client.close()
+        with lock:
+            bytes = client.recv(2800000)
+            client.close()        
 
+def get_feed():
+    global bytes, lock
+
+    while True:
+        with lock:
+            if bytes is None:
+                continue
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-			bytearray(bytes) + b'\r\n')
+		bytearray(bytes) + b'\r\n')
 
 @app.route('/feed')
 @requires_auth
 def feed():
-    return Response(get_bytes(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+    t = threading.Thread(target=get_bytes)
+    t.daemon = True
+    t.start()
+    return Response(get_feed(), mimetype = "multipart/x-mixed-replace; boundary=frame")
    
 @app.route('/live')
 @requires_auth
@@ -128,4 +144,4 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':
-    app.run(threaded=False, use_reloader=False)
+    app.run(threaded=True, use_reloader=False)
