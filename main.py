@@ -84,9 +84,9 @@ def logout():
     params = {'returnTo': url_for('home', _external=True), 'client_id': AUTH0_CLIENT_ID}
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
-@app.route('/static')
+@app.route('/static_feed')
 @requires_auth
-def static():
+def static_feed():
     return render_template('static.html')
    
 @app.route('/live')
