@@ -1,6 +1,4 @@
-import os, json, threading, datetime, time, threading
-
-from socket import *
+import os, json
 
 from functools import wraps
 from werkzeug.exceptions import HTTPException
@@ -19,9 +17,6 @@ AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
-
-bytes = None
-lock = threading.Lock()
 
 #####################################################################################################
 ### Auth0
@@ -71,7 +66,7 @@ def callback_handling():
         'name': userinfo['name'],
         'picture': userinfo['picture']
     }
-    return redirect('/menu')
+    return redirect('/dashboard')
 
 #####################################################################################################
 ### Routing
@@ -91,49 +86,16 @@ def logout():
 
 @app.route('/static')
 @requires_auth
-def play():
+def static():
     return render_template('static.html')
-
-def get_bytes():
-    #global bytes, lock
-
-    addr = os.environ.get('MY_IP')
-    port = int(os.environ.get('MY_PORT'))    
-    
-    while True:
-        client = socket(AF_INET, SOCK_STREAM)
-        client.connect((addr, port))
-        #length = int(client.recv(2048).decode('utf-8'))
-        #with lock:
-        bytes = client.recv(30000)
-        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-		    bytearray(bytes) + b'\r\n')
-        client.close()
-
-def get_feed():
-    global bytes, lock
-
-    while True:
-        with lock:
-            if bytes is None:
-                continue
-            yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-		    bytearray(bytes) + b'\r\n')
-
-@app.route('/feed')
-@requires_auth
-def feed():
-    #t = threading.Thread(target=get_bytes)
-    #t.daemon = True
-    #t.start()
-    return Response(get_bytes(), mimetype = "multipart/x-mixed-replace; boundary=frame")
    
 @app.route('/live')
 @requires_auth
 def live():
-    return render_template('live.html')
+    source = "http://" + os.environ.get("SITE") + ":2001/stream.ogg"
+    return render_template('live.html', s=source)
     
-@app.route('/menu')
+@app.route('/dashboard')
 @requires_auth
 def dashboard():
     return render_template('menu.html')
@@ -143,4 +105,4 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':
-    app.run(threaded=True, use_reloader=False)
+    app.run()
