@@ -1,19 +1,93 @@
 <!DOCTYPE html>
 
 <html>
-    <head><title>Net Centric Final</title>
+    <head>
+		<title>Net Centric Final</title>
+		<style>
+		  
+	    p{
+		color: white;
+	    	font-size: 300%;
+		text-align: center;
+		
+	    }
+		@import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap');
+	    body { 
+  		background-image: url('https://4.bp.blogspot.com/-zO8hwvt7iMk/XAVxt4aoQvI/AAAAAAAAwa4/D5m3ApKkAAABZteHWWv_5uzTn8X7JaDxgCPcBGAYYCw/s640/7T9364v.gif');
+  		background-repeat: no-repeat;
+  		background-attachment: fixed;
+  		background-size: cover;
+		
+	    }
+		  
+	/* <!-- NEON LIGHT STYLE CODE --> */
+		  
+		  	.neon{
+			position: absolute;
+			top: 10%;
+			Left: 50%;
+			transform: translate(-50%,-50%);
+			margin: 0;
+			padding: 0 20px;
+			font-size: 6em;
+			color: #0AF4CF;
+			text-shadow: 0 0 20px #0AF4CF;
+			
+		}
+		  .neon: after{
+			content: attr(data-text);
+			position: absolute;
+			top: 0;
+			Left: 0;
+			padding: 0 20px;
+			z-index: -1;
+			color: #0AF4CF;
+			filter: blur(15px);
+			
+		  }
+
+		  .neon: before{
+		  	  content: '';
+			  position: absolute;
+			  top: 0;
+			  Left: 0;
+			  width: 100%;
+			  height: 100%;
+			  background: #fe3a80;
+			  z-index: -2;
+			  opacity: .5;
+			  filter: blur(40x);
+			
+		  }
+		  
+	/* <!-- NEON LIGHT STYLE --> */
+		  
+	  </style> 
+	</head>
     <body>
         <div>
-            <p>Home</p>
+		<!-- neon code -->
+		<h1 class ="neon" data-text = "NEON LIGHTS">CNT Project</h1>
+		<!-- neon code end -->
+           
         </div>
-        <div>
-            <a href='/static_feed'>See the static stream</a>            
+        <div>   
+		
+		<p>    
+		<br /> 
+		<br />
+		<br />
+		</p>
+		
+		<a href="/static_feed" style = "margin:auto; font-size: 300%; color: white; text-align:center; display:block;" class="button large hpbottom">See the static stream</a>
+          
+		<a href="/live" style = "margin:auto; font-size: 300%; color: white; text-align:center; display:block;" class="button large hpbottom">See the live stream</a>
+           
         </div>
-        <div>
-            <a href='/live'>See the live stream</a>
-        </div>
-		<div>
-            <a href='/logout'>Logout</a>
+	    
+	<div>
+		<a href="/logout" style = "margin:auto; font-size: 300%; color: white; text-align:center; display:block;" class="button large hpbottom">Logout</a>
+          
         </div>        
     </body>
 </html>
