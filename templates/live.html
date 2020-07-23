@@ -17,11 +17,21 @@
             height: 375px;
             background-color: #666;
         }
-    </style>    
+    </style>
+    <script>
+            function start()
+            {
+                var video = document.querySelector("#stream");
+                video.onloadedmetadata = function (e)
+                {
+                    video.play();
+                };
+            }
+    </script>
 </head>
-<body>
-    <div id="container">
-        <img id="image" src="{{url_for('feed') }}" />
-    </div>
+<body onload="start()">
+    <video id="stream" width="640" height="480" controls autoplay muted>
+        <source src="{{s}}" type="video/ogg" codecs="theora" />
+    </video>
 </body>
 </html>
