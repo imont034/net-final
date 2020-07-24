@@ -87,7 +87,7 @@ def logout():
 @app.route('/static_feed')
 @requires_auth
 def static_feed():
-    return render_template('static.html')
+    return render_template('static.html', token="Why hello, Flask+React dev!")
    
 @app.route('/live')
 @requires_auth
@@ -105,4 +105,4 @@ def home():
     return redirect("/login", code=302)    
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
