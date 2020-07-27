@@ -13,7 +13,7 @@ AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
 AUTH0_CLIENT_SECRET = os.environ.get('AUTH0_CLIENT_SECRET')
 AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
 AUTH0_BASE_URL = 'https://' + AUTH0_DOMAIN
-AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
+AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE') 
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('KEY')
@@ -99,6 +99,11 @@ def live():
 @requires_auth
 def dashboard():
     return render_template('menu.html')
+
+@app.route('/content_inquiries')
+@requires_auth
+def inquiries():
+    return render_template('inquiries.html')
 
 @app.route('/')
 def home():    

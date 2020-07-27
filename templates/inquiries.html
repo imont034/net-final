@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Please enter a music video you want to see! </title>
+</head>
+<body>
+    <div class="container"></div>
+    <img src="../static/DMIS.jpg" alt = "Music">
+    <form action = "/submit" method = "POST">
+    <!--every "form group is an input-->
+    <div class = "form-group">
+        <h3>Name</h3>
+        <!--name= is how to connect tot the backend-->
+        <input
+            type="text"
+            name="music_lover"
+            placeholder="Music lover making the suggestion"
+        />
+    </div>
+    <div class="form-group">
+        <h3>Select genre</h3>
+            <input type="radio" name="genre" value="RnB" />RnB
+            <input type="radio" name="genre" value="Jazz" />Jazz
+            <input type="radio" name="genre" value="Hip Hop" />Hip Hop
+            <input type="radio" name="genre" value="Heavy Metal" />Heavy Metal
+            <input type="radio" name="genre" value="Rock 'n Roll" />Rock 'n Roll
+    </div>
+    <div class="form-group">
+        <h3>Your suggestion:</h3>
+        <textarea
+            name="comments"
+            id=""
+            cols="30"
+            rows="10"
+            placeholder="Give us the name of the song and artist"
+        ></textarea> 
+    </div>
+    <input type="submit" value="Submit" class="btn" />    
+    </form>
+</body>
+</html>
