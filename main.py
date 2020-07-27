@@ -105,6 +105,21 @@ def dashboard():
 def inquiries():
     return render_template('inquiries.html')
 
+@app.route('/submit', methods=['POST'])
+@requires_auth
+def submit()
+    #you want to first check what kind of request it is to determine
+    #how to handle it
+    if request.method == 'POST':
+        #depending on the name in the html file, you want to grab data
+        #specific form
+        music_lover = request.form['music_lover']
+        genre = request.form['genre']
+        comments = request.form['comments']
+        print(music_lover, genre, comments)
+        return render_template('success.html')
+
+
 @app.route('/')
 def home():    
     return redirect("/login", code=302)    
