@@ -116,7 +116,6 @@ def submit()
         music_lover = request.form['music_lover']
         genre = request.form['genre']
         comments = request.form['comments']
-        print(music_lover, genre, comments)
         return render_template('success.html')
 
 
