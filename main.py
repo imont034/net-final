@@ -107,7 +107,7 @@ def inquiries():
 
 @app.route('/submit', methods=['POST'])
 @requires_auth
-def submit()
+def submit():
     #you want to first check what kind of request it is to determine
     #how to handle it
     if request.method == 'POST':
